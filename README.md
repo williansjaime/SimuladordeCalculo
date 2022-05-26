@@ -1,2 +1,2 @@
-# SimuladordeCalculo
-Sistema em angula 13 para simular calculo de conbrança
+# Projeto Simulador Seu Consumo com Angular
+
