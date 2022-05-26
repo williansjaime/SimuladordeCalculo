@@ -1,0 +1,28 @@
+.header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.header .logo {
+    max-height: 50px;
+}
+
+.header .title-group {
+    padding: 250px;
+    color: black;
+    width: 500px;
+  
+    display: flex;
+    justify-content: space-between;
+  }
+
+.header .title-group i {
+    padding-right: 5px;
+}
+
+mat-card-title .h4 {
+    text-align: center !important;
+}
+

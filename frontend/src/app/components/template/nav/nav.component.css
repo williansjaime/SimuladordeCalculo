@@ -1,0 +1,86 @@
+.content {
+    padding: 1%;
+    background-color: #FFF;
+    height : 600px;
+}
+
+.sidenav {
+    /* background-color: #22325b; */
+    width: 350px;
+    height : 630px; 
+    padding: 10px;
+    padding-top: 15px;
+    padding-right: 15px;
+}
+
+.sidenav a {
+    color: #FFF;
+}
+
+.sidenav i {
+    padding-right: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: center;
+    width: 100%;
+    font-size: 15px;
+}
+
+button {
+    border-radius: 4px;
+    border-spacing: 100px;
+    color: rgb(242, 242, 248);
+    background-color: rgb(70, 70, 245);
+    margin: 3px 1px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+h4 {
+    height: 20px;
+    top: 2px;
+}
+
+
+table {
+    width: 100%;
+}
+
+
+.full-width-table {
+    width: 100%;
+}
+
+td,
+th {
+    text-align: center !important;
+}
+
+mat-card {
+    padding: 5px;
+}
+
+mat-card-title {
+    text-align: center !important;
+}
+
+.text-success {
+    color: #3dc940;
+}
+
+.text-danger {
+    color: #f3110d;
+}
+
+.matInput{
+    position: fixed;
+    top: 50%;
+    left: 50%; 
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); 
+    width:100%;
+   }
+ 

@@ -1,0 +1,151 @@
+<mat-tab-group>
+  <mat-tab label="COPASA">
+    <mat-sidenav-container class="container">
+      <mat-sidenav class="sidenav" mode="side" opened position="end" fixedInViewport="true" fixedTopGap="64" >
+        <!-- A função "position" coloca o component Navebar(Sidenav) todo para a esquerda da tela -->
+        <mat-card>
+          <mat-card-title><strong>Calcular</strong></mat-card-title>
+          <form>
+            <mat-form-field appearance="fill">
+              <mat-label><strong>Fluido</strong></mat-label>
+              <select matNativeControl required [(ngModel)]="fluidoValue" name="fluido" (change)="calcularUnidades()">
+                <option *ngFor="let fluido of fluido" [value]="fluido.value">
+                  {{fluido.viewValue}}
+                </option>
+              </select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label><strong>Fornecedor</strong></mat-label>
+              <select matNativeControl required [(ngModel)]="fornecedorValue" name="fornecedor"
+                (change)="calcularUnidades()">
+                <option *ngFor="let fornecedor of fornecedor" [value]="fornecedor.value">
+                  {{fornecedor.viewValue}}
+                </option>
+              </select>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label><strong>Metodo de Cobrança</strong></mat-label>
+              <select matNativeControl required [(ngModel)]="selectedMetodo" name="metodo" (change)="calcularUnidades()">
+                <option *ngFor="let metodo of metodo" [value]="metodo.value">
+                  {{metodo.viewValue}}
+                </option>
+              </select>
+            </mat-form-field>
+            <mat-form-field>
+              <label><strong>Número de Unidades</strong></label>
+              <input type="number" matInput [(ngModel)]="numeroUnidades" name="numerounidade"
+                (change)="construirCalcularUnidades()">
+            </mat-form-field>
+            <mat-form-field>
+              <label><strong>Consumo da Conta</strong></label>
+              <input type="number" matInput [(ngModel)]="consumoConta" name="consumoValue"
+                (change)="calcularUnidadeseConsumoFaturaUnidades()">
+            </mat-form-field>
+            <mat-form-field>
+              <label><strong>Valor da Conta</strong></label>
+              <input matInput name="name" type="number" [(ngModel)]="valorConta" (change)="calcularUnidades()">
+            </mat-form-field>
+            <div>
+              <label style="color: #1D2E58;"><strong>Consumo das Unidades (m³)</strong></label><br/>
+              <label>
+                <strong>{{ConsumoTotalUnidades | number:'.3-3' }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <strong [ngClass]="{ 'text-success': ( ConsumoTotalUnidades - consumoConta ) < 0 , 'text-danger': ( ConsumoTotalUnidades - consumoConta ) > 0 }">
+                  ({{ ConsumoTotalUnidades - consumoConta | number:'.3-3' }})
+                </strong>
+              </label>
+              <hr/>
+            </div>
+            <div>
+              <label style="color: #1D2E58;"><strong>Valor Arrecadado</strong></label><br/>
+              <label>
+                <strong>{{ valortotalUnidades | currency:'BRL':'symbol':'1.3-3':'pt'}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <strong [ngClass]="{ 'text-success': ( valortotalUnidades - valorConta) > 0 , 'text-danger': ( valortotalUnidades - valorConta ) < 0 }">
+                  ({{ valortotalUnidades - valorConta | currency:'BRL':'symbol':'1.3-3':'pt' }})
+                </strong>
+              </label>
+            </div>
+            <hr/>
+          </form>
+        </mat-card>
+      </mat-sidenav>
+      <mat-sidenav-content class="content">
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" class="full-width-table" aria-label="Elements">
+            <!-- Id Column -->
+            <ng-container matColumnDef="unidade">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Unidade</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row">{{row.nome}}</td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="consumo">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Consumo (m³)</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row"><input type="number"
+                 matInput [(ngModel)]="row.consumo" name="consumoValue"
+                  (change)="calcularUnidades()"></td>
+            </ng-container>
+    
+            <!-- Price Column -->
+            <ng-container matColumnDef="ValorUnitario">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Custo do m³</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.valorUnitario | currency:'BRL':'symbol':'1.3-3':'pt' }}</td>
+            </ng-container>
+    
+            <!-- Name Column -->
+            <ng-container matColumnDef="taxaFixa">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Taxa Fixa</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row">{{row.taxaFixa | currency:'BRL':'symbol':'1.3-3':'pt'}}</td>
+            </ng-container>
+    
+            <!-- Price Column -->
+            <ng-container matColumnDef="ValorFluido">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Valor Fluido</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.valorFluido | currency:'BRL':'symbol':'1.3-3':'pt' }}</td>
+            </ng-container>
+            <!-- Price Column -->
+            <ng-container matColumnDef="valorRateio">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Valor Rateio</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.valorRateio | currency:'BRL':'symbol':'1.3-3':'pt' }}</td>
+            </ng-container>
+            <!-- Price Column -->
+            <ng-container matColumnDef="valorTotal">
+              <th mat-header-cell *matHeaderCellDef>
+                <h4><strong>Valor Total</strong></h4>
+              </th>
+              <td mat-cell *matCellDef="let row"><strong>{{ row.valorTotal | currency:'BRL':'symbol':'1.3-3':'pt'
+                  }}</strong></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </mat-tab>
+
+</mat-tab-group>
+
+
+
+
+
+<!--<div>
+  <mat-label>{{selectedValue}}</mat-label>
+</div>  -->
+
+<!--
+        <button mat-raised-button (click)="compartilhar()">
+          Compartilhar
+        </button>
+      -->
